@@ -29,6 +29,7 @@
             --md-sys-color-on-primary-container: #eaddff;
             --md-sys-color-error: #f2b8b5;
             --md-sys-color-outline: #49454f;
+            
             --border-radius-large: 28px;
             --border-radius-full: 100px;
         }
@@ -162,6 +163,13 @@
             animation: slideUp 0.3s ease-out;
         }
 
+        .comments-section {
+            background-color: var(--md-sys-color-surface);
+            padding: 12px;
+            border-radius: var(--border-radius-large);
+            margin-top: 8px;
+        }
+
         @keyframes slideUp {
             from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
@@ -194,6 +202,15 @@
         </div>
 
         <div class="fact-container" id="factOutput"></div>
+
+        <div class="comments-section">
+            <script async src="https://comments.app/js/widget.js?3" 
+                data-comments-app-website="5JvOrkuW" 
+                data-limit="5" 
+                data-colorful="1" 
+                data-dark="1">
+            </script>
+        </div>
     </div>
 
     <script>
@@ -204,9 +221,7 @@
             const now = new Date();
             const moscowTime = new Intl.DateTimeFormat('ru-RU', {
                 timeZone: 'Europe/Moscow',
-                hour: '2-digit',
-                minute: '2-digit',
-                second: '2-digit',
+                hour: '2-digit', minute: '2-digit', second: '2-digit',
                 hour12: false
             }).formatToParts(now);
 
