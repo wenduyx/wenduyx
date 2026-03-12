@@ -21,7 +21,7 @@
         }
 
         :root {
-            /* Темная тема (по умолчанию) */
+            /* Темная тема */
             --md-sys-color-background: #1c1b1f;
             --md-sys-color-surface: #2b2930;
             --md-sys-color-on-surface: #e6e1e5;
@@ -34,8 +34,8 @@
             --border-radius-full: 100px;
         }
 
-        /* Светлая тема */
         body.light-mode {
+            /* Светлая тема */
             --md-sys-color-background: #fef7ff;
             --md-sys-color-surface: #f3edf7;
             --md-sys-color-on-surface: #1d1b20;
@@ -71,19 +71,20 @@
             background-color: var(--md-sys-color-surface);
             padding: 24px;
             border-radius: var(--border-radius-large);
-            position: relative;
+            position: relative; /* Чтобы кнопка темы была внутри */
         }
 
-        /* Кнопка переключения темы */
         .theme-toggle {
             position: absolute;
-            top: 16px;
-            right: 16px;
+            top: 20px;
+            right: 20px;
             background: none;
             border: none;
             color: var(--md-sys-color-on-surface-variant);
             font-size: 20px;
             cursor: pointer;
+            padding: 8px;
+            transition: opacity 0.2s;
         }
 
         .main-text {
@@ -151,7 +152,7 @@
             font-family: 'Google Sans', sans-serif;
             font-weight: 500;
             cursor: pointer;
-            transition: 0.2s;
+            transition: transform 0.1s;
         }
 
         .action-button:active { transform: scale(0.97); }
@@ -160,6 +161,7 @@
             display: flex;
             justify-content: center;
             gap: 16px;
+            margin: 8px 0;
         }
 
         .social-btn {
@@ -173,8 +175,10 @@
             align-items: center;
             text-decoration: none;
             font-size: 24px;
-            transition: 0.2s;
+            transition: transform 0.1s;
         }
+
+        .social-btn:active { transform: scale(0.9); }
 
         .fact-container {
             display: none; 
@@ -191,6 +195,7 @@
             background-color: var(--md-sys-color-surface);
             padding: 12px;
             border-radius: var(--border-radius-large);
+            margin-top: 8px;
             min-height: 100px;
         }
 
@@ -210,6 +215,7 @@
             
             <div class="image-time-row">
                 <img src="avatarka.jpg" alt="Profile" class="profile-image">
+                
                 <div class="time-wrapper">
                     <div class="time-label">местное время</div>
                     <div class="local-time" id="timeDisplay">00.00.00</div>
@@ -231,7 +237,7 @@
     </div>
 
     <script>
-        // --- ЛОГИКА ВРЕМЕНИ ---
+        // --- ВРЕМЯ ---
         function updateTime() {
             const display = document.getElementById('timeDisplay');
             const warning = document.getElementById('warningText');
@@ -253,45 +259,34 @@
         updateTime();
         setInterval(updateTime, 1000);
 
-        // --- ЛОГИКА КОММЕНТАРИЕВ И ТЕМЫ ---
+        // --- ТЕМА И КОММЕНТАРИИ ---
         const commentsContainer = document.getElementById('comments-container');
         const themeToggle = document.getElementById('themeToggle');
         let isDark = true;
 
         function loadComments(dark) {
-            // Очищаем контейнер перед новой загрузкой
             commentsContainer.innerHTML = '';
-            
             const script = document.createElement('script');
             script.async = true;
             script.src = "https://comments.app/js/widget.js?3";
             script.setAttribute('data-comments-app-website', '5JvOrkuW');
             script.setAttribute('data-limit', '5');
             script.setAttribute('data-colorful', '1');
-            
-            // Если тема темная, добавляем атрибут
-            if (dark) {
-                script.setAttribute('data-dark', '1');
-            }
-
+            if (dark) script.setAttribute('data-dark', '1');
             commentsContainer.appendChild(script);
         }
 
         themeToggle.addEventListener('click', () => {
             isDark = !isDark;
             document.body.classList.toggle('light-mode');
-            
-            // Меняем иконку
             themeToggle.innerHTML = isDark ? '<i class="fas fa-moon"></i>' : '<i class="fas fa-sun"></i>';
-            
-            // Перезагружаем комментарии с новой темой
             loadComments(isDark);
         });
 
-        // Первая загрузка
+        // Начальная загрузка виджета
         loadComments(true);
 
-        // --- ФАКТЫ ---
+        // --- ФАКТЫ (Твой список) ---
         const factsList = [
             "Факт №1: \"Моча отбеливает зубы\" Сосницкий Д.И.",
             "Факт №8: \"Пузо беременных мужчин больше чем у дохлой бабки\" Вирусняк",
@@ -319,8 +314,10 @@
                 do {
                     randomIndex = Math.floor(Math.random() * factsList.length);
                 } while (lastIndices.includes(randomIndex));
+
                 lastIndices.push(randomIndex);
                 if (lastIndices.length > 2) lastIndices.shift();
+
                 output.textContent = factsList[randomIndex];
                 output.style.display = 'block';
             }, 300);
